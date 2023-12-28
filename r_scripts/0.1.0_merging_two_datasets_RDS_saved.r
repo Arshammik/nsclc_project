@@ -10,8 +10,8 @@ library(GEOquery)
 library(data.table)
 
 #gathering the file paths
-file_paths <- paste0("~/Documents/Single Cell/Own Project/Data/GSE189357_RAW/", 
-                    list.files(path = "~/Documents/Single Cell/Own Project/Data/GSE189357_RAW/"))
+file_paths <- paste0("~/Documents/single_cell/nsclc_project/data/GSE189357_RAW/", 
+                    list.files(path = "~/Documents/single_cell/nsclc_project/data/GSE189357_RAW/"))
 
 for(i in 1:length(file_paths)){
   name <- sub("(^.*)(...$)", "\\2", file_paths[i])
