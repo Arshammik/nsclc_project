@@ -23,7 +23,11 @@ for(i in 1:length(file_paths)){
 mtx1 <- cbind(TD1, TD2, TD3, TD4, TD5, TD6, TD7, TD8, TD9)
 dim(mtx1)
 
-mtx2 <- readRDS("~/Documents/Single Cell/Own Project/Data/GSE131907_Lung_Cancer_normalized_log2TPM_matrix_filtered.rds")
+#QC
+colsums_mtx1 <- hist(colSums(mtx1))
+
+
+mtx2 <- readRDS("~/Documents/single_cell/nsclc_project/data/GSE131907_Lung_Cancer_normalized_log2TPM_matrix_filtered.rds")
 mtx2 <- bigmemory::as.matrix(mtx2)
 mtx2 <- Matrix(mtx2, sparse = TRUE)
 dim(mtx2)
