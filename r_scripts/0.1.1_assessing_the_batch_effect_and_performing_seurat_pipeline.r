@@ -10,15 +10,14 @@ mtx <- readRDS("~/Documents/single_cell/nsclc_project/data/mtx.rds")
 pbmc <- CreateSeuratObject(counts = mtx, project = 'nsclc', min.cells = 2, min.features = 200)
 pbmc[["mt.percent"]] <- PercentageFeatureSet(object = pbmc, pattern = "^MT-")
 
-VlnPlot(object = pbmc, features = c("nFeature_RNA", "nCount_RNA", "mt.percent"), ncol = 3, raster = FALSE)
 pbmc <- subset(pbmc, subset = nFeature_RNA < 5000 & nCount_RNA < 10000 & mt.percent < 5)
-rownames_meat <- rownames(pbmc@meta.data)
-pbmc@meta.data$barcode <- rownames_meat
-pbmc@meta.data$title <- sub("(^.{17})(.*$)","\\2",rownames_meat)
+VlnPlot(object = pbmc, features = c("nFeature_RNA", "nCount_RNA", "mt.percent"), ncol = 3, raster = FALSE)
+rownames_meta <- rownames(pbmc@meta.data)
+pbmc@meta.data$barcode <- rownames_meta
+pbmc@meta.data$title <- sub("(^.{17})(.*$)","\\2",rownames_meta)
 
-
-# we have two GEO data sets 
-uniqie_rownames <- unique(metadata_rownames)
+# two GEO data sets 
+uniqie_rownames <- unique(pbmc@meta.data$title)
 #GSE131907
 GSE131907 <- getGEO(GEO = "GSE131907", GSEMatrix = TRUE)
 GSE131907_pheno <- pData(object = GSE131907[[1]])
@@ -36,6 +35,8 @@ GSE189357_pheno$stage <- c("IV", "IV", "I", "I", "0", "I", "0", "0", "IV")
 
 sample_stages <- rbind(GSE131907_pheno[,c(1,6)], GSE189357_pheno[,c(1,6)])
 sample_stages[37:45,1] <- paste0("1_", sample_stages[37:45,1])
+sample_stages$GSM <- rownames(sample_stages)
+rownames(sample_stages) <- NULL
 
 pbmc@meta.data <- merge(pbmc@meta.data, sample_stages, by = "title")
 rownames(pbmc@meta.data) <- pbmc@meta.data$barcode
@@ -50,4 +51,4 @@ pbmc <- FindClusters(object = pbmc, resolution = 0.5)
 pbmc <- RunUMAP(object = pbmc, dims = 1:20)
 
 DimPlot(object = pbmc, reduction = "umap", group.by = "stage", raster = FALSE)
-
+saveRDS(pbmc, "~/Documents/single_cell/nsclc_project/results/pbmc(before_batch_effect_removal).rds")
