@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(GEOquery))
+set.seed(42)
 
 pbmc <- readRDS("~/Documents/single_cell/nsclc_project/results/pbmc(before_batch_effect_removal).rds")
 
