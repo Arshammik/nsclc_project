@@ -1,4 +1,8 @@
-### **Batch effect removal** 
+### 1. Data structures and study design
+Innthis project the main objection was to integrate two data sets to have a progression view on different stages in non small cell lung cancer (NSCLC).
+  
+
+### **3.Batch effect removal** 
 
 Since we integrated two data sets, one of the most concerning consideration should be the batch effect. We might see non-biological
 
